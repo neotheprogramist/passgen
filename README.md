@@ -15,8 +15,8 @@ To generate a password, simply run `passgen` in your terminal. By default, it wi
 ## Command-Line Arguments
 
 - `-l, --length [default: 16]`: Specifies the total length of the password.
-- `-d, --digit-num [default: 4]`: Specifies the number of digits in the password.
-- `-s, --special-char-num [default: 4]`: Specifies the number of special characters in the password.
+- `-d, --digits [default: 4]`: Specifies the number of digits in the password.
+- `-s, --specials [default: 4]`: Specifies the number of special characters in the password.
 
 ## Examples
 
@@ -29,7 +29,7 @@ passgen -l 25 -d 6 -s 6
 Alternatively, using the long-form options:
 
 ```bash
-passgen --length 25 --digit-num 6 --special-char-num 6
+passgen --length 25 --digits 6 --specials 6
 ```
 
 ---

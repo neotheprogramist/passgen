@@ -1,39 +1,43 @@
 use clap::Parser;
-use rand::prelude::SliceRandom;
-use rand::seq::IteratorRandom;
+use rand::{prelude::SliceRandom, seq::IteratorRandom};
 use serde::{Deserialize, Serialize};
-use std::iter;
 
 #[derive(Parser, Debug, Serialize, Deserialize)]
 #[clap(author, version, about, long_about = None)]
 pub struct Args {
     #[clap(short = 'l', long, default_value = "16")]
-    pub length: usize,
+    pub length: u32,
 
     #[clap(short = 'd', long, default_value = "1")]
-    pub digits: usize,
+    pub digits: u32,
 
     #[clap(short = 's', long, default_value = "1")]
-    pub specials: usize,
+    pub specials: u32,
 }
 
 /// Generates a password based on specified constraints for length, number of digits, and number of special characters.
-pub fn generate_password(length: usize, digits: usize, specials: usize) -> String {
-    const BASE58: &str = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+pub fn generate_password(length: u32, digits: u32, specials: u32) -> String {
+    let mut rng = rand::thread_rng();
+
     const DIGITS: &str = "123456789";
     const SPECIAL: &str = "!@#$%^&*";
-    let mut password_chars: Vec<char> =
-        iter::repeat_with(|| SPECIAL.chars().choose(&mut rand::thread_rng()).unwrap())
-            .take(specials)
-            .chain(
-                iter::repeat_with(|| DIGITS.chars().choose(&mut rand::thread_rng()).unwrap())
-                    .take(digits),
-            )
-            .chain(
-                iter::repeat_with(|| BASE58.chars().choose(&mut rand::thread_rng()).unwrap())
-                    .take(length - digits - specials),
-            )
-            .collect();
-    password_chars.shuffle(&mut rand::thread_rng());
-    password_chars.into_iter().collect()
+    const ALL: &str = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789!@#$%^&*";
+
+    let mut result = Vec::new();
+
+    for _ in 0..digits {
+        result.push(DIGITS.chars().choose(&mut rng).unwrap());
+    }
+
+    for _ in 0..specials {
+        result.push(SPECIAL.chars().choose(&mut rng).unwrap());
+    }
+
+    for _ in 0..(length - digits - specials) {
+        result.push(ALL.chars().choose(&mut rng).unwrap());
+    }
+
+    result.shuffle(&mut rng);
+
+    result.into_iter().collect()
 }

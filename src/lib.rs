@@ -10,10 +10,10 @@ pub struct Args {
     #[clap(short = 'l', long, default_value = "16")]
     pub length: usize,
 
-    #[clap(short = 'd', long, default_value = "4")]
+    #[clap(short = 'd', long, default_value = "1")]
     pub digits: usize,
 
-    #[clap(short = 's', long, default_value = "4")]
+    #[clap(short = 's', long, default_value = "1")]
     pub specials: usize,
 }
 
